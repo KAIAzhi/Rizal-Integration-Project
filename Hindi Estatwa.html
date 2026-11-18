@@ -1,0 +1,788 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hindi Estatwa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: one left-aligned reading column, a sticky tab bar, and a single bold moment in the hero headline.
+   Palette: ink navy on cool paper, flag red for emphasis only, flag blue for links and progress. */
+:root {
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --tint: #E6EBF5;
+  --ink: #0E1B31;
+  --muted: #51617A;
+  --line: #D1D9E5;
+  --blue: #1B3F8F;
+  --red: #C41E2E;
+  --sun: #E9AE00;
+  --ok: #1C7A57;
+  --f-display: 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
+  --f-text: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1220; --surface: #111C30; --tint: #16233B; --ink: #E8EDF5; --muted: #97A7BF;
+    --line: #243350; --blue: #8FADFF; --red: #FF7480; --sun: #FFCB3D; --ok: #5FD3A2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1220; --surface: #111C30; --tint: #16233B; --ink: #E8EDF5; --muted: #97A7BF;
+  --line: #243350; --blue: #8FADFF; --red: #FF7480; --sun: #FFCB3D; --ok: #5FD3A2;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-text);
+  font-size: 18px;
+  line-height: 1.55;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  background: var(--bg); z-index: 10;
+}
+.wrap { max-width: 46rem; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: var(--blue); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* tab bar */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 11;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem 1rem; padding-block: 0.6rem 0; }
+.brand { font-family: var(--f-display); font-weight: 800; font-size: 1.05rem; color: var(--ink); text-decoration: none; padding-bottom: 0.6rem; }
+.brand span { color: var(--red); }
+.tabs { display: flex; gap: 0.25rem; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  font-family: var(--f-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; padding: 0.55rem 0.7rem 0.7rem; white-space: nowrap;
+  border-bottom: 3px solid transparent; position: relative;
+}
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--red); }
+.tabs a[data-done]::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); margin-left: 6px; vertical-align: middle; }
+
+section.view { padding-block: 2.25rem 1rem; }
+section.view[hidden] { display: none; }
+
+/* buttons */
+.btn {
+  font-family: var(--f-display); font-weight: 700; font-size: 1rem;
+  background: var(--ink); color: var(--bg); border: 0; border-radius: 6px;
+  padding: 0.75rem 1.15rem; cursor: pointer; text-decoration: none; display: inline-block; line-height: 1.2;
+}
+.btn:hover { opacity: 0.88; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+.row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+/* hero */
+.hero h1 { font-weight: 800; font-size: clamp(2.9rem, 13vw, 6rem); line-height: 0.95; letter-spacing: -0.03em; }
+.hero h1 s { text-decoration-color: var(--red); text-decoration-thickness: 0.09em; color: var(--muted); }
+.lede { font-size: 1.25rem; margin-top: 1.25rem; max-width: 34rem; }
+.switch { margin-top: 2rem; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--surface); }
+.seg { display: flex; border-bottom: 1.5px solid var(--ink); }
+.seg button {
+  flex: 1; font-family: var(--f-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: transparent; color: var(--muted); border: 0; padding: 0.8rem 0.5rem; cursor: pointer;
+}
+.seg button + button { border-left: 1.5px solid var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.switch .out { padding: 1.25rem 1.1rem 1.35rem; min-height: 9.5rem; font-size: 1.3rem; line-height: 1.4; }
+.switch .out p + p { margin-top: 0.6rem; }
+.switch .out .mono { display: block; margin-top: 1rem; }
+
+/* module rows */
+.mods { margin-top: 3rem; display: grid; gap: 0; border-top: 1.5px solid var(--ink); }
+.mod {
+  display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; align-items: start;
+  padding: 1.15rem 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+}
+.mod:hover h2 { color: var(--blue); }
+.mod h2 { font-size: 1.7rem; }
+.mod p.d { grid-column: 1; color: var(--muted); max-width: 32rem; }
+.mod .go { grid-row: 1 / span 2; grid-column: 2; font-family: var(--f-display); font-size: 1.6rem; color: var(--red); align-self: center; }
+.pill { font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ok); border: 1px solid var(--ok); border-radius: 99px; padding: 0.1rem 0.5rem; margin-left: 0.5rem; vertical-align: middle; }
+
+/* claims */
+.claims { margin-top: 3rem; }
+.claims > h2 { font-size: 1.9rem; margin-bottom: 0.4rem; }
+.claims > p { color: var(--muted); margin-bottom: 1.2rem; }
+details.claim { border-top: 1px solid var(--line); padding: 0.9rem 0; }
+details.claim:last-of-type { border-bottom: 1px solid var(--line); }
+details.claim summary { cursor: pointer; list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+details.claim summary::-webkit-details-marker { display: none; }
+details.claim summary q { font-family: var(--f-display); font-weight: 700; font-size: 1.2rem; line-height: 1.2; quotes: none; }
+details.claim summary .v { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); }
+details.claim .body { margin-top: 0.7rem; max-width: 38rem; }
+
+/* page heading for modules */
+.ph h2 { font-size: clamp(2rem, 8vw, 3.2rem); font-weight: 800; line-height: 1; }
+.ph p.sub { margin-top: 0.8rem; color: var(--muted); max-width: 36rem; }
+.primer { margin-top: 1.4rem; background: var(--tint); border-radius: 8px; padding: 0.9rem 1rem; font-size: 1rem; }
+.primer b { font-family: var(--f-display); }
+
+/* quiz + path card */
+.card { margin-top: 1.5rem; background: var(--surface); border: 1.5px solid var(--ink); border-radius: 8px; padding: 1.25rem 1.1rem 1.35rem; }
+.meter { height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
+.meter span { display: block; height: 100%; background: var(--blue); transition: width 0.3s; }
+.story { font-size: 1.4rem; line-height: 1.35; margin: 0.6rem 0 1.2rem; }
+.opts { display: grid; gap: 0.6rem; }
+.opt {
+  text-align: left; font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; color: var(--ink);
+  background: var(--bg); border: 1.5px solid var(--line); border-radius: 6px; padding: 0.8rem 0.95rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.1rem;
+}
+.opt small { font-family: var(--f-text); font-weight: 400; font-size: 0.95rem; color: var(--muted); }
+.opt:hover:not(:disabled) { border-color: var(--ink); }
+.opt:disabled { cursor: default; }
+.opt[aria-pressed="true"] { border-color: var(--blue); background: var(--tint); }
+.opt.rz { border-color: var(--red); }
+.reveal { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed var(--line); animation: rise 0.3s ease both; }
+.reveal p + p { margin-top: 0.6rem; }
+.reveal .tag { color: var(--red); }
+.reveal .btn { margin-top: 1rem; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .reveal { animation: none; } html { scroll-behavior: auto; } .meter span { transition: none; } }
+
+.ans-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.5rem; }
+.ans-list li { display: grid; grid-template-columns: 1fr auto; gap: 0.75rem; align-items: baseline; font-size: 1rem; border-bottom: 1px solid var(--line); padding-bottom: 0.5rem; }
+.ans-list .chip { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); background: var(--tint); border-radius: 4px; padding: 0.15rem 0.45rem; white-space: nowrap; }
+.big { font-family: var(--f-display); font-weight: 800; font-size: 2.2rem; line-height: 1.05; }
+
+/* feed */
+.note { margin-top: 1.4rem; border-left: 4px solid var(--sun); background: var(--surface); padding: 0.7rem 0.9rem; font-size: 1rem; border-radius: 0 6px 6px 0; }
+.chips { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1.4rem; }
+.chips button {
+  font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: transparent; color: var(--ink); border: 1.5px solid var(--line); border-radius: 99px; padding: 0.4rem 0.8rem; cursor: pointer;
+}
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.count { margin-top: 0.9rem; }
+.feed { margin-top: 1rem; display: grid; gap: 0; }
+.post { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0.8rem; padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
+.av { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 0.95rem; }
+:root[data-theme="dark"] .av { color: #0A1220; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .av { color: #0A1220; } }
+.who { display: flex; flex-wrap: wrap; gap: 0 0.5rem; align-items: baseline; }
+.who b { font-family: var(--f-display); font-size: 1.05rem; }
+.who span { color: var(--muted); font-size: 0.95rem; }
+.when { margin-top: 0.15rem; }
+.post .txt { margin-top: 0.5rem; font-size: 1.2rem; line-height: 1.4; }
+.acts { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; margin-top: 0.7rem; }
+.relate { background: none; border: 0; padding: 0.25rem 0; font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+.relate[aria-pressed="true"] { color: var(--red); }
+.relate::before { content: "♡ "; }
+.relate[aria-pressed="true"]::before { content: "♥ "; }
+.post details { margin-top: 0; }
+.post summary { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); cursor: pointer; padding: 0.25rem 0; list-style: none; }
+.post summary::-webkit-details-marker { display: none; }
+.post summary::before { content: "+ "; }
+.post details[open] summary::before { content: "– "; }
+.ctx { margin-top: 0.5rem; background: var(--tint); border-radius: 6px; padding: 0.8rem 0.9rem; font-size: 1rem; }
+.ctx p + p { margin-top: 0.5rem; }
+
+/* path */
+.scene-place { color: var(--red); }
+.bars { display: grid; gap: 0.9rem; margin-top: 1rem; }
+.bar-row { display: grid; gap: 0.25rem; }
+.bar-row .lab { font-family: var(--f-display); font-weight: 700; font-size: 1rem; }
+.track { display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) 1.5rem; gap: 0.5rem; align-items: center; font-family: var(--f-mono); font-size: 0.7rem; color: var(--muted); }
+.track i { display: block; height: 10px; border-radius: 2px; }
+.track .you i { background: var(--blue); }
+.track .riz i { background: var(--red); }
+.trk { height: 10px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.trk i { height: 100%; }
+
+/* kahulugan */
+.trail { margin-top: 1.5rem; background: var(--tint); border-radius: 8px; padding: 1rem 1.1rem; display: grid; gap: 0.55rem; font-size: 1rem; }
+.trail p b { font-family: var(--f-display); }
+form.def { margin-top: 1.8rem; display: grid; gap: 1.5rem; }
+.fld label { display: block; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; }
+.fld .hint { color: var(--muted); font-size: 0.98rem; margin: 0.2rem 0 0.5rem; }
+.fld textarea {
+  width: 100%; min-height: 6.2rem; resize: vertical; font-family: var(--f-text); font-size: 1.1rem; line-height: 1.45;
+  background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); border-radius: 6px; padding: 0.7rem 0.8rem;
+}
+.fld textarea:focus { outline: 3px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+.preview { margin-top: 2rem; background: var(--ink); color: var(--bg); border-radius: 8px; padding: 1.4rem 1.2rem 1.5rem; }
+.preview .mono { color: inherit; opacity: 0.7; }
+.preview h3 { font-size: 1.1rem; margin-top: 1.1rem; color: var(--sun); }
+:root[data-theme="dark"] .preview h3 { color: #8A5A00; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .preview h3 { color: #8A5A00; } }
+.preview p { font-size: 1.2rem; margin-top: 0.25rem; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+.preview p.empty { opacity: 0.55; font-style: italic; }
+.preview .btn { margin-top: 1.3rem; background: var(--bg); color: var(--ink); }
+.copybox { display: block; width: 100%; margin-top: 0.8rem; min-height: 8rem; font-family: var(--f-mono); font-size: 0.8rem; background: var(--bg); color: var(--ink); border: 0; border-radius: 6px; padding: 0.6rem; }
+.lenses { margin-top: 2.5rem; }
+.lenses > h2 { font-size: 1.7rem; margin-bottom: 0.3rem; }
+.lenses > p { color: var(--muted); margin-bottom: 1rem; }
+.src { margin-top: 2.5rem; font-size: 0.95rem; color: var(--muted); }
+.src h2 { font-size: 1.3rem; color: var(--ink); margin-bottom: 0.5rem; }
+.src ul { padding-left: 1.1rem; margin: 0; display: grid; gap: 0.35rem; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#home">Hindi <span>Estatwa</span></a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#bayani" data-view="bayani" data-k="bayani">Bayani?</a>
+      <a href="#feed" data-view="feed" data-k="feed">Feed</a>
+      <a href="#path" data-view="path" data-k="path">Path</a>
+      <a href="#kahulugan" data-view="kahulugan" data-k="def">Kahulugan</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section class="view hero" id="v-home">
+  <p class="mono">José Rizal, 1861–1896</p>
+  <h1 style="margin-top:0.8rem">Hindi siya <s>estatwa</s>.</h1>
+  <p class="lede">He was a 35-year-old doctor who ran out of money, disagreed with people on his own side, and made choices he could not take back. Meet him that way, then decide what <em>bayani</em> means to you.</p>
+
+  <div class="switch">
+    <div class="seg" role="group" aria-label="Two ways to describe Rizal">
+      <button type="button" id="sw-a" aria-pressed="true">The textbook line</button>
+      <button type="button" id="sw-b" aria-pressed="false">The record</button>
+    </div>
+    <div class="out" id="sw-out" aria-live="polite"></div>
+  </div>
+
+  <div class="mods">
+    <a class="mod" href="#bayani">
+      <p class="mono">Quiz · 5 min</p>
+      <span class="go" aria-hidden="true">→</span>
+      <h2>Sino ang Bayani?<span class="pill" data-status="bayani" hidden>Done</span></h2>
+      <p class="d">Six situations, three verdicts each. Your answers show where your own line is.</p>
+    </a>
+    <a class="mod" href="#feed">
+      <p class="mono">Timeline · 8 min</p>
+      <span class="go" aria-hidden="true">→</span>
+      <h2>A Day in Rizal’s Feed<span class="pill" data-status="feed" hidden>Done</span></h2>
+      <p class="d">His life as a social feed, from a jailed mother in 1872 to a poem in a stove in 1896. Every post opens to its source.</p>
+    </a>
+    <a class="mod" href="#path">
+      <p class="mono">Story · 6 min</p>
+      <span class="go" aria-hidden="true">→</span>
+      <h2>Choose Your Path<span class="pill" data-status="path" hidden>Done</span></h2>
+      <p class="d">Make his real decisions. Some endings are alternate histories you can only reach by choosing differently.</p>
+    </a>
+    <a class="mod" href="#kahulugan">
+      <p class="mono">Your turn · 5 min</p>
+      <span class="go" aria-hidden="true">→</span>
+      <h2>Ang Aking Kahulugan<span class="pill" data-status="def" hidden>Done</span></h2>
+      <p class="d">Write your own definition of nationalism, bayani and kabayanihan, using what you just saw as evidence.</p>
+    </a>
+  </div>
+
+  <div class="claims">
+    <h2>Mga paniniwala, sinusuri</h2>
+    <p>Three things people say about Rizal. Tap one.</p>
+    <details class="claim">
+      <summary><q>Ang hindi lumingon sa pinanggalingan ay hindi makakarating sa paroroonan.</q><span class="v">Misattributed</span></summary>
+      <div class="body"><p>This is a Filipino proverb that gets shared as Rizal’s own words. Fact-checkers have flagged the attribution as mistaken, so check a source before putting it in a paper. <a href="https://pressone.ph/fact-check-first-lady-mistakenly-attributes-filipino-proverb-to-rizal/" target="_blank" rel="noopener">PressOne fact-check</a>.</p></div>
+    </details>
+    <details class="claim">
+      <summary><q>Rizal is the national hero because the Americans picked him.</q><span class="v">Contested</span></summary>
+      <div class="body"><p>Historian Renato Constantino argued in 1969 that Rizal’s elevation under American rule suited colonial interests, and that Filipinos honored him without engaging his ideas. Others point out that Aguinaldo’s revolutionary government had already declared December 30, 1898 a day of national mourning for Rizal. Both facts are part of the story. <a href="https://en.wikipedia.org/wiki/Rizal_Day" target="_blank" rel="noopener">Rizal Day, background</a>.</p></div>
+    </details>
+    <details class="claim">
+      <summary><q>Rizal rejected revolution, so he was no revolutionary.</q><span class="v">Historians still argue</span></summary>
+      <div class="body"><p>In 1896 he reportedly told a Katipunan messenger that an uprising was premature, and from prison he wrote that he condemned it. Yet the Katipunan was founded the day after his arrest in 1892, and many who joined it had read his novels. Is a hero defined by his plans, or by what his work set in motion? That is your question to answer.</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- BAYANI QUIZ -->
+<section class="view" id="v-bayani" hidden>
+  <div class="ph">
+    <p class="mono">Quiz</p>
+    <h2 style="margin-top:0.5rem">Sino ang Bayani?</h2>
+    <p class="sub">Read each situation and give your verdict. There is no score, only a pattern.</p>
+  </div>
+  <p class="primer"><b>Bayani</b> usually names a person. <b>Kabayanihan</b> names the act or quality of heroism. They don’t always arrive together, which is why there are three answers.</p>
+  <div class="card" id="q-root"></div>
+</section>
+
+<!-- FEED -->
+<section class="view" id="v-feed" hidden>
+  <div class="ph">
+    <p class="mono">Timeline</p>
+    <h2 style="margin-top:0.5rem">A Day in Rizal’s Feed</h2>
+    <p class="sub">If Pepe had posted, it might have looked like this. Open <em>Source</em> under each post for the documented event behind it.</p>
+  </div>
+  <p class="note">The voice is reimagined. The dates, places and events are drawn from the historical record.</p>
+  <div class="chips" id="f-chips" role="group" aria-label="Filter by period"></div>
+  <p class="mono count" id="f-count"></p>
+  <div class="feed" id="f-list"></div>
+</section>
+
+<!-- PATH -->
+<section class="view" id="v-path" hidden>
+  <div class="ph">
+    <p class="mono">Story</p>
+    <h2 style="margin-top:0.5rem">Choose Your Path</h2>
+    <p class="sub">Eight decisions Rizal actually faced. Some choices end the story early. Others bend it for a moment, then history catches up.</p>
+  </div>
+  <div class="card" id="p-root"></div>
+</section>
+
+<!-- KAHULUGAN -->
+<section class="view" id="v-kahulugan" hidden>
+  <div class="ph">
+    <p class="mono">Your turn</p>
+    <h2 style="margin-top:0.5rem">Ang Aking Kahulugan</h2>
+    <p class="sub">Define the three words in your own language. Use what you noticed in the other sections as evidence.</p>
+  </div>
+  <div class="trail" id="trail" aria-live="polite"></div>
+
+  <form class="def" id="def-form" autocomplete="off">
+    <div class="fld">
+      <label for="d-nat">Nationalism</label>
+      <p class="hint">Start with: “For me, nationalism is…”</p>
+      <textarea id="d-nat" name="nat"></textarea>
+    </div>
+    <div class="fld">
+      <label for="d-bay">Bayani</label>
+      <p class="hint">Who counts, and who doesn’t? Think about the scenarios where you hesitated.</p>
+      <textarea id="d-bay" name="bay"></textarea>
+    </div>
+    <div class="fld">
+      <label for="d-kab">Kabayanihan</label>
+      <p class="hint">Is it an act, a habit, or something a community does together?</p>
+      <textarea id="d-kab" name="kab"></textarea>
+    </div>
+    <div class="fld">
+      <label for="d-riz">Does Rizal fit your definition?</label>
+      <p class="hint">Test it. Consider his choices to publish, to stay in Dapitan, and to call the uprising premature.</p>
+      <textarea id="d-riz" name="riz"></textarea>
+    </div>
+  </form>
+
+  <div class="preview" id="d-prev" aria-live="polite"></div>
+
+  <div class="lenses">
+    <h2>Starting points from scholars</h2>
+    <p>Not answers, only lenses you can borrow or argue with.</p>
+    <details class="claim"><summary><q>Renato Constantino, “Veneration Without Understanding” (1969)</q></summary>
+      <div class="body"><p>Argued that honoring Rizal as a national hero is not the same as understanding his ideas, and that his elevation under American rule suited colonial interests.</p></div></details>
+    <details class="claim"><summary><q>Reynaldo Ileto, <i>Pasyon and Revolution</i> (1979)</q></summary>
+      <div class="body"><p>Studied how ordinary Filipinos understood revolt through the language of the pasyon, not only through the ideas of the educated elite.</p></div></details>
+    <details class="claim"><summary><q>Zeus Salazar on <i>bayani</i></q></summary>
+      <div class="body"><p>Filipino historians including Salazar have linked the word <i>bayani</i> to <i>bayan</i>, the community. If heroism belongs to a community, a hero is not only a lone individual.</p></div></details>
+    <details class="claim"><summary><q>Ambeth Ocampo, <i>Rizal Without the Overcoat</i> (1990)</q></summary>
+      <div class="body"><p>A well-known effort to look at Rizal through everyday details and debates about his image rather than through monuments.</p></div></details>
+  </div>
+
+  <div class="src">
+    <h2>Sources and further reading</h2>
+    <ul>
+      <li>Rizal’s own works: <i>Noli Me Tangere</i> (1887), <i>El Filibusterismo</i> (1891), “A la juventud filipina” (1879), the letter “Sa mga Kababayang Dalaga sa Malolos” (1889), and his annotations of Morga’s <i>Sucesos de las Islas Filipinas</i> (1890).</li>
+      <li>Constantino, R. “Veneration Without Understanding” (1969). Ileto, R. <i>Pasyon and Revolution</i> (1979). Ocampo, A. <i>Rizal Without the Overcoat</i> (1990).</li>
+      <li><a href="https://pressone.ph/fact-check-first-lady-mistakenly-attributes-filipino-proverb-to-rizal/" target="_blank" rel="noopener">PressOne: fact-check on the misattributed proverb</a>.</li>
+      <li><a href="https://en.wikipedia.org/wiki/Rizal_Day" target="_blank" rel="noopener">Rizal Day (background on the 1898 mourning decree)</a>.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>A project for the Rizal course. Posts and scenes retell documented events in a modern voice. Verify details against the readings before citing them.</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem('he-' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem('he-' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  /* ---------- progress ---------- */
+  var prog = store.get('prog', { bayani: false, feed: false, path: false, def: false });
+  function paintProg() {
+    $$('.tabs a').forEach(function (a) { if (prog[a.dataset.k]) a.setAttribute('data-done', ''); else a.removeAttribute('data-done'); });
+    $$('[data-status]').forEach(function (el) { el.hidden = !prog[el.dataset.status]; });
+  }
+  function mark(k) { if (!prog[k]) { prog[k] = true; store.set('prog', prog); } paintProg(); }
+
+  /* ---------- router ---------- */
+  var VIEWS = ['home', 'bayani', 'feed', 'path', 'kahulugan'];
+  function route() {
+    var h = (location.hash || '').replace('#', '');
+    if (VIEWS.indexOf(h) < 0) h = 'home';
+    VIEWS.forEach(function (v) { $('#v-' + v).hidden = (v !== h); });
+    $$('.tabs a').forEach(function (a) {
+      if (a.dataset.view === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    window.scrollTo(0, 0);
+    if (h === 'kahulugan') renderTrail();
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ---------- home switch ---------- */
+  var SW = {
+    a: '<p>National hero. Genius. Martyr.</p><p>Perfect from birth, certain of his fate.</p><span class="mono">What many of us remember from school</span>',
+    b: '<p>He ran out of money while printing his first novel.</p><p>He told the Katipunan’s messenger an uprising was too early.</p><p>He was 35 when he was shot.</p><span class="mono">From the documented record. See the Feed for sources</span>'
+  };
+  function setSwitch(k) {
+    $('#sw-out').innerHTML = SW[k];
+    $('#sw-a').setAttribute('aria-pressed', k === 'a');
+    $('#sw-b').setAttribute('aria-pressed', k === 'b');
+  }
+  $('#sw-a').addEventListener('click', function () { setSwitch('a'); });
+  $('#sw-b').addEventListener('click', function () { setSwitch('b'); });
+  setSwitch('a');
+
+  /* ---------- QUIZ ---------- */
+  var OPT = [
+    { v: 'b', l: 'Bayani', s: 'A hero, as a person' },
+    { v: 'k', l: 'Kabayanihan lang', s: 'A heroic act, but not a hero' },
+    { v: 'n', l: 'Hindi', s: 'Neither' }
+  ];
+  var LABEL = { b: 'Bayani', k: 'Kabayanihan lang', n: 'Hindi' };
+  var SC = [
+    { t: 'Ordinary duty', rizal: false,
+      text: 'A nurse in a provincial hospital works double shifts for months. Nobody thanks her. She never posts about it.',
+      note: 'Kabayanihan can be quiet and repeated, not only dramatic. If you said “Hindi,” ask whether the missing ingredient was danger, an audience, or a single big moment.' },
+    { t: 'Truth against power', rizal: false,
+      text: 'A student reports a professor who sells grades. Afterward, the classmates who benefited stop talking to her.',
+      note: 'The cost here is social, not physical. Does a cost make an act heroic, or is doing the right thing simply what everyone should do?' },
+    { t: 'The community as hero', rizal: false,
+      text: 'After a typhoon, a whole barangay cooks, carries and rebuilds together for a week. No one is in charge and no one is named.',
+      note: 'Filipino historians including Zeus Salazar have linked the word bayani to bayan, the community. If the hero is a group, who gets called the bayani?' },
+    { t: 'Motive versus result', rizal: false,
+      text: 'A famous influencer donates ₱1 million to flood victims and posts the receipt.',
+      note: 'The families still eat. Does motive matter, or only the result? Your answer reveals whether your definition looks at intention or at outcome.' },
+    { t: 'Words as action', rizal: true,
+      text: 'A doctor writes a novel exposing abuses by friars and officials. He knows his family may be targeted. He publishes it anyway.',
+      note: 'This is Rizal and the Noli, 1887. His weapon was a pen. Is publishing already an act of kabayanihan, before anything changes?' },
+    { t: 'Contested heroism', rizal: true,
+      text: 'A man tells the Katipunan’s messenger that an uprising is too early. After it begins, he is arrested and executed. Is he a hero of the revolution?',
+      note: 'This is Rizal in 1896. He judged the uprising premature, yet the Spanish held him responsible. A hero is made by what he did, and also by what people later decide it meant.' }
+  ];
+  var qs = { i: 0, ans: [] };
+
+  function renderQuiz() {
+    var root = $('#q-root');
+    if (qs.i >= SC.length) return renderQuizEnd(root);
+    var s = SC[qs.i];
+    root.innerHTML =
+      '<div class="meter"><span style="width:' + (qs.i / SC.length * 100) + '%"></span></div>' +
+      '<p class="mono">Scenario ' + (qs.i + 1) + ' of ' + SC.length + (s.rizal ? ' · From Rizal’s life' : '') + '</p>' +
+      '<p class="story">' + s.text + '</p>' +
+      '<div class="opts" role="group" aria-label="Your verdict">' +
+      OPT.map(function (o) { return '<button type="button" class="opt" data-v="' + o.v + '" aria-pressed="false">' + o.l + '<small>' + o.s + '</small></button>'; }).join('') +
+      '</div><div id="q-reveal" aria-live="polite"></div>';
+    $$('.opt', root).forEach(function (b) { b.addEventListener('click', function () { pickQuiz(b); }); });
+  }
+  function pickQuiz(btn) {
+    if (qs.ans[qs.i]) return;
+    var s = SC[qs.i];
+    qs.ans[qs.i] = btn.dataset.v;
+    $$('.opt').forEach(function (b) { b.disabled = true; b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+    var last = qs.i === SC.length - 1;
+    $('#q-reveal').innerHTML = '<div class="reveal"><p class="mono tag">Lens · ' + s.t + '</p><p>' + s.note + '</p><button type="button" class="btn" id="q-next">' + (last ? 'See my pattern' : 'Next scenario') + '</button></div>';
+    var nx = $('#q-next');
+    nx.addEventListener('click', function () { qs.i++; renderQuiz(); });
+    nx.focus();
+  }
+  function renderQuizEnd(root) {
+    var c = { b: 0, k: 0, n: 0 };
+    qs.ans.forEach(function (a) { c[a]++; });
+    store.set('quiz', { c: c, ans: qs.ans });
+    mark('bayani');
+    var msg;
+    if (c.b >= 5) msg = 'You use a wide definition. Almost every situation counted as bayani. The question to test is whether a word that covers everything still means something.';
+    else if (c.b <= 1) msg = 'You use a narrow definition. Few situations earned the word bayani. Ask yourself what exactly is missing from the ones you held back.';
+    else msg = 'You draw a line somewhere in the middle. The useful work is naming exactly where.';
+    root.innerHTML =
+      '<div class="meter"><span style="width:100%"></span></div>' +
+      '<p class="mono">Your pattern</p>' +
+      '<p class="big" style="margin-top:0.5rem">' + c.b + ' bayani · ' + c.k + ' kabayanihan lang · ' + c.n + ' hindi</p>' +
+      '<p style="margin-top:0.8rem">' + msg + '</p>' +
+      '<ul class="ans-list">' + SC.map(function (s, i) { return '<li><span>' + s.t + (s.rizal ? ' <span class="mono">(Rizal)</span>' : '') + '</span><span class="chip">' + LABEL[qs.ans[i]] + '</span></li>'; }).join('') + '</ul>' +
+      '<p style="margin-top:1.1rem">Look at the situations where you chose “Kabayanihan lang.” Those are the cases where you separated the act from the person. That gap is the heart of your definition.</p>' +
+      '<div class="row" style="margin-top:1.2rem"><a class="btn" href="#feed">Meet Rizal in his Feed</a><button type="button" class="btn ghost" id="q-again">Answer again</button></div>';
+    $('#q-again').addEventListener('click', function () { qs = { i: 0, ans: [] }; renderQuiz(); });
+  }
+
+  /* ---------- FEED ---------- */
+  var PHASES = ['All', 'Youth', 'Europe', 'Return', 'Dapitan', '1896'];
+  var POSTS = [
+    { id: 'p1', ph: 'Youth', when: 'February 17, 1872 · Calamba', text: 'Three priests were executed today. Kuya Paciano won’t talk about it. Mama is still in jail. I am ten and nobody will tell me why.',
+      src: ['Fathers Mariano Gómez, José Burgos and Jacinto Zamora (GOMBURZA) were executed on February 17, 1872 after the Cavite mutiny. Rizal’s older brother Paciano was close to Burgos.', 'Rizal’s mother, Teodora Alonso, was arrested in 1871, accused of trying to poison a relative by marriage, and spent over two years in detention far from home. Rizal later dedicated <i>El Filibusterismo</i> to the three priests.'] },
+    { id: 'p2', ph: 'Youth', when: '1879 · Manila', text: 'Won a literary contest with a poem for the youth. I called you the fair hope of my fatherland. No pressure.',
+      src: ['Rizal wrote “A la juventud filipina” in 1879 for a competition of the Liceo Artístico-Literario in Manila and won first prize.', 'Its line calling the young the “bella esperanza de la patria mía” is the source of the familiar slogan about the youth as the nation’s hope.'] },
+    { id: 'p3', ph: 'Europe', when: 'May 1882 · At sea', text: 'Left Manila by ship with no goodbye at the pier, because questions would have followed. Medicine and philosophy in Madrid. Mama’s eyes are failing, so eyes come first.',
+      src: ['Rizal left for Spain in May 1882, quietly and with the support of Paciano and his family. At the Universidad Central de Madrid he studied medicine and philosophy and letters.', 'He later specialized in ophthalmology in Paris and Heidelberg, partly because of his mother’s eye condition.'] },
+    { id: 'p4', ph: 'Europe', when: 'March 1887 · Berlin', text: 'Noli Me Tangere is printed. Money ran out midway and Maximo Viola lent me the rest. I cut chapters to save on pages. 2,000 copies.',
+      src: ['The <i>Noli</i> was published in Berlin in March 1887. A loan from his friend Maximo Viola let Rizal complete the printing, and he removed some chapters to reduce costs.'] },
+    { id: 'p5', ph: 'Europe', when: 'February 1889 · London', text: 'To the young women of Malolos: you asked for a night school even though the friar objected. That is courage. Keep going.',
+      src: ['Rizal wrote “Sa mga Kababayang Dalaga sa Malolos” in Tagalog in February 1889, after a group of women in Malolos petitioned Governor-General Weyler for a night school to learn Spanish despite opposition from the parish friar.'] },
+    { id: 'p6', ph: 'Europe', when: '1890 · London and Paris', text: 'Months in the British Museum annotating Morga’s history of the islands. The point: we had a society before they arrived, and I can show it.',
+      src: ['Rizal annotated Antonio de Morga’s <i>Sucesos de las Islas Filipinas</i>, published in Paris in 1890. The aim was to show that precolonial Filipinos had a developed culture and history of their own.'] },
+    { id: 'p7', ph: 'Europe', when: 'September 1891 · Ghent', text: 'El Filibusterismo is out. It is darker than the first book. I dedicated it to the three priests.',
+      src: ['The <i>Fili</i> was published in Ghent in September 1891, with financial help from Valentín Ventura. It is dedicated to GOMBURZA and is widely read as a darker, angrier book than the <i>Noli</i>.'] },
+    { id: 'p8', ph: 'Return', when: 'July 1892 · Manila', text: 'Founded La Liga Filipina on July 3 to unite us peacefully: mutual aid, schools, one voice. On July 6 I was arrested.',
+      src: ['Rizal founded the Liga Filipina on July 3, 1892 in Tondo. He was arrested on July 6 and deported to Dapitan, arriving on July 17. The Liga collapsed.', 'Andrés Bonifacio founded the Katipunan on July 7, 1892, the day after Rizal’s arrest. Several Liga members later joined it.'] },
+    { id: 'p9', ph: 'Dapitan', when: '1893–1896 · Dapitan', text: 'Four years in Dapitan. A school for boys, a clinic, a water system. Nobody asked me to build any of it.',
+      src: ['During his exile in Dapitan (1892–1896) Rizal opened a school, practiced medicine including eye surgery, farmed, and worked on improving the town’s water supply. He met Josephine Bracken there in 1895.'] },
+    { id: 'p10', ph: 'Dapitan', when: 'June 1896 · Dapitan', text: 'A messenger from the Katipunan came to ask what I think of their plans. I told him it is too early: no arms, no funds, and the wealthy are not with us.',
+      src: ['Pío Valenzuela visited Rizal in Dapitan in June 1896 on behalf of the Katipunan. By Valenzuela’s later account, Rizal advised against an uprising without preparation and did not accept a plan to rescue him.', 'Because much of this comes from Valenzuela’s own testimony, historians treat the details with some caution.'] },
+    { id: 'p11', ph: '1896', when: 'September 1896 · At sea', text: 'Cleared to sail for Cuba as a volunteer doctor. The revolt started in August without me. I am arrested before I can get there.',
+      src: ['Rizal left Dapitan on July 31, 1896 and sailed from Manila on September 3 on his way to Spain and then Cuba. The Katipunan uprising had broken out in late August. He was arrested en route and returned to Manila as a prisoner.'] },
+    { id: 'p12', ph: '1896', when: 'December 15, 1896 · Fort Santiago', text: 'Wrote a manifesto from my cell. I want reform. I condemn this uprising.',
+      src: ['On December 15, 1896 Rizal wrote a manifesto stating that he opposed the uprising. It did not save him, and historians debate how to read it: as honest conviction, as a legal defense, or both.'] },
+    { id: 'p13', ph: '1896', when: 'December 29, 1896 · Fort Santiago', text: 'Finished the poem. Hid it in an alcohol stove for my family. Told my sister there is something inside.',
+      src: ['Rizal’s untitled farewell poem, known as <i>Mi último adiós</i>, was reportedly hidden in an alcohol cooker given to his sister Trinidad on his last night.'] },
+    { id: 'p14', ph: '1896', when: 'December 30, 1896 · Bagumbayan', text: 'Morning. I asked to face the firing squad. Request denied. Accounts say I turned anyway. I am 35.',
+      src: ['Rizal was executed by firing squad at Bagumbayan (today’s Rizal Park) on December 30, 1896. The squad consisted of Filipino soldiers, with Spanish troops behind them. Accounts differ on the details of his final moments.'] }
+  ];
+  var readSet = store.get('read', []);
+  var fphase = 'All';
+  var related = {};
+  function renderChips() {
+    $('#f-chips').innerHTML = PHASES.map(function (p) { return '<button type="button" data-p="' + p + '" aria-pressed="' + (p === fphase) + '">' + p + '</button>'; }).join('');
+    $$('#f-chips button').forEach(function (b) { b.addEventListener('click', function () { fphase = b.dataset.p; renderChips(); renderFeed(); }); });
+  }
+  function updateCount() {
+    $('#f-count').textContent = 'Sources opened: ' + readSet.length + ' of ' + POSTS.length;
+    if (readSet.length >= 5) mark('feed');
+  }
+  function renderFeed() {
+    var list = POSTS.filter(function (p) { return fphase === 'All' || p.ph === fphase; });
+    $('#f-list').innerHTML = list.map(function (p) {
+      return '<article class="post"><div class="av" aria-hidden="true">JR</div><div style="min-width:0">' +
+        '<div class="who"><b>José Rizal</b><span>@pepe · reimagined</span></div>' +
+        '<p class="mono when">' + p.when + '</p>' +
+        '<p class="txt">' + p.text + '</p>' +
+        '<div class="acts"><button type="button" class="relate" data-id="' + p.id + '" aria-pressed="' + (!!related[p.id]) + '">Relatable</button>' +
+        '<details data-id="' + p.id + '"' + '><summary>Source</summary><div class="ctx">' + p.src.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div></details></div>' +
+        '</div></article>';
+    }).join('');
+    $$('#f-list .relate').forEach(function (b) {
+      b.addEventListener('click', function () { related[b.dataset.id] = !related[b.dataset.id]; b.setAttribute('aria-pressed', !!related[b.dataset.id]); });
+    });
+    $$('#f-list details').forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (d.open && readSet.indexOf(d.dataset.id) < 0) { readSet.push(d.dataset.id); store.set('read', readSet); updateCount(); }
+      });
+    });
+    updateCount();
+  }
+
+  /* ---------- PATH ---------- */
+  var NODES = {
+    n1: { place: 'Heidelberg, 1886', text: 'You have finished a novel about abuse under Spanish rule, and the friars are among its villains. Publishing it will make you a target. Your family is still in Calamba and your savings are almost gone.',
+      ch: [
+        { l: 'Publish it.', next: 'n2', tag: 'risk', rz: true, re: 'Rizal published <i>Noli Me Tangere</i> in Berlin in 1887. When the money ran out, Maximo Viola lent him enough to finish the printing. Both he and his family faced pressure afterward.' },
+        { l: 'Set it aside and finish your eye training.', next: 'endQuiet', tag: 'restraint', rz: false, re: 'Rizal did not do this. This ending is a thought experiment, not history.' }
+      ] },
+    n2: { place: 'Madrid and Paris, 1889–90', text: 'The reform movement is tired. Spain keeps ignoring petitions. Some compatriots say it is time to prepare for armed revolt. You write for <i>La Solidaridad</i>, a newspaper that argues for reform.',
+      ch: [
+        { l: 'Start organizing for an armed uprising.', next: 'n3', tag: 'risk', rz: false, re: 'Rizal did not. Another group did: Andrés Bonifacio founded the Katipunan in 1892 to seek independence by force. Two Filipinos, two strategies, one cause. History resumes here.' },
+        { l: 'Keep pressing for reform through writing and education.', next: 'n3', tag: 'restraint', rz: true, re: 'This is what Rizal did in the early 1890s. He treated armed revolt as a last resort and worried that an unprepared uprising would be crushed.' }
+      ] },
+    n3: { place: 'Hong Kong, 1891–92', text: 'Your family has been forced out of Calamba in a land dispute. You have settled in Hong Kong and your medical practice is growing. A friend warns that the authorities in Manila may arrest you if you return.',
+      ch: [
+        { l: 'Stay in Hong Kong and work from safety.', next: 'endHK', tag: 'restraint', rz: false, re: 'Rizal did not stay. In June 1892 he went home to Manila, knowing the risk.' },
+        { l: 'Return to Manila.', next: 'n4', tag: 'risk', rz: true, re: 'In June 1892 Rizal went home. Within weeks he was organizing a civic league.' }
+      ] },
+    n4: { place: 'Manila, July 1892', text: 'You want Filipinos to organize: mutual aid, schools, and a shared voice, without violence. The group is legal, but officials and friars will watch it closely.',
+      ch: [
+        { l: 'Found it and put your name on it.', next: 'n5', tag: 'risk', rz: true, re: 'Rizal founded La Liga Filipina on July 3, 1892. Three days later he was arrested and sent to Dapitan. The Katipunan was founded the day after his arrest.' },
+        { l: 'Support it quietly and let others lead.', next: 'n5', tag: 'restraint', rz: false, re: 'Rizal put himself in front. History resumes here: he was arrested three days after the Liga’s founding and exiled to Dapitan.' }
+      ] },
+    n5: { place: 'Dapitan, 1893', text: 'You are exiled to a small town in Mindanao without a trial. You can stay as long as the Governor-General decides. The days stretch out.',
+      ch: [
+        { l: 'Wait out the exile and keep your head down.', next: 'n6', tag: 'restraint', rz: false, re: 'Rizal did not just wait. History resumes here.' },
+        { l: 'Build something where you are.', next: 'n6', tag: 'service', rz: true, re: 'Rizal opened a school for boys, treated patients and worked on improving the water supply. Many readers see this as his most practical form of service.' }
+      ] },
+    n6: { place: 'Dapitan, June 1896', text: 'A messenger from the Katipunan arrives. They are planning an uprising and ask for your support. They can also arrange for you to escape the island.',
+      ch: [
+        { l: 'Accept the escape and join them.', next: 'endRescue', tag: 'risk', rz: false, re: 'Rizal did not accept. This ending is a guess at an alternate history.' },
+        { l: 'Decline. Say it is too early: no weapons, no funds, no wealthy backers.', next: 'n7', tag: 'restraint', rz: true, re: 'By the account of the messenger, Pío Valenzuela, Rizal said the uprising was premature and declined to escape. Historians treat the details with some caution because they come from Valenzuela’s later testimony.' }
+      ] },
+    n7: { place: 'Dapitan, July 1896', text: 'The Governor-General approves your request to serve as a volunteer doctor in Cuba, where yellow fever is killing soldiers. Leaving means your school and Josephine stay behind. Staying means remaining a prisoner.',
+      ch: [
+        { l: 'Stay in Dapitan.', next: 'n8', tag: 'restraint', rz: false, re: 'Rizal took the posting. History resumes here: he left Dapitan on July 31, 1896, the revolt began in August, and he was arrested on the way.' },
+        { l: 'Take the posting and sail.', next: 'n8', tag: 'service', rz: true, re: 'Rizal left Dapitan on July 31 and sailed on September 3. He was arrested during the voyage and returned to Manila as a prisoner.' }
+      ] },
+    n8: { place: 'Fort Santiago, December 1896', text: 'The uprising is spreading. You are a prisoner, and the government will blame you for it. A friend says a written statement against the revolt might help your case.',
+      ch: [
+        { l: 'Say nothing in public.', next: 'final', tag: 'risk', rz: false, re: 'Rizal chose to write. History resumes here: he was tried on December 26 and sentenced to death.' },
+        { l: 'Write a statement condemning the uprising.', next: 'final', tag: 'restraint', rz: true, re: 'On December 15 Rizal wrote that he opposed the uprising. It did not save him. Historians still argue over whether it was conviction, legal strategy, or both.' }
+      ] },
+    endQuiet: { end: true, title: 'The Quiet Doctor', text: 'You publish nothing, finish your training and return as a respected eye doctor. It is a good life, but there is no <i>Noli Me Tangere</i>. Many historians credit the novel with helping Filipinos imagine themselves as one people.' },
+    endHK: { end: true, title: 'The Safe Exile', text: 'You stay in Hong Kong and keep working from a distance. Many Filipino reformers did exactly that, in Madrid, London and Hong Kong. Rizal went home, and that choice cost him his freedom.' },
+    endRescue: { end: true, title: 'The Face of a Movement', text: 'You join a revolt you did not plan. We cannot say how it would have gone. What we know is that the Katipunan rose in August 1896 without him, and that his name was invoked by the movement anyway.' }
+  };
+  var TAGS = { risk: 'Taking risks', restraint: 'Holding back', service: 'Serving others' };
+  var ps = { id: 'n1', hist: [] };
+  var ends = store.get('ends', []);
+  var TOTAL_ENDS = 4;
+
+  function addEnd(id) { if (ends.indexOf(id) < 0) { ends.push(id); store.set('ends', ends); } }
+  function tally(arr) { var t = { risk: 0, restraint: 0, service: 0 }; arr.forEach(function (x) { t[x]++; }); return t; }
+
+  function renderPath() {
+    var root = $('#p-root');
+    var n = NODES[ps.id];
+    if (ps.id === 'final') return renderFinal(root);
+    if (n.end) {
+      addEnd(ps.id);
+      root.innerHTML = '<p class="mono scene-place">Alternate ending</p><h3 class="big" style="margin-top:0.4rem">' + n.title + '</h3>' +
+        '<p class="story" style="margin-top:0.8rem;font-size:1.2rem">' + n.text + '</p>' +
+        '<p class="mono">Endings found: ' + ends.length + ' of ' + TOTAL_ENDS + '</p>' +
+        '<div class="row" style="margin-top:1.1rem"><button type="button" class="btn" id="p-restart">Try a different choice</button></div>';
+      $('#p-restart').addEventListener('click', restartPath);
+      return;
+    }
+    var step = ps.hist.length + 1;
+    root.innerHTML =
+      '<div class="meter"><span style="width:' + ((step - 1) / 8 * 100) + '%"></span></div>' +
+      '<p class="mono scene-place">' + n.place + ' · Decision ' + step + ' of 8</p>' +
+      '<p class="story">' + n.text + '</p>' +
+      '<div class="opts" role="group" aria-label="Your choice">' +
+      n.ch.map(function (c, i) { return '<button type="button" class="opt" data-i="' + i + '" aria-pressed="false">' + c.l + '</button>'; }).join('') +
+      '</div><div id="p-reveal" aria-live="polite"></div>';
+    $$('.opt', root).forEach(function (b) { b.addEventListener('click', function () { choose(parseInt(b.dataset.i, 10), b); }); });
+  }
+  function choose(i, btn) {
+    var n = NODES[ps.id];
+    var c = n.ch[i];
+    if (ps.chosen) return;
+    ps.chosen = true;
+    ps.hist.push({ id: ps.id, tag: c.tag, rz: c.rz, rzTag: n.ch.filter(function (x) { return x.rz; })[0].tag });
+    $$('.opt').forEach(function (b, j) { b.disabled = true; b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); if (n.ch[j].rz) b.classList.add('rz'); });
+    var nextEnd = NODES[c.next] && NODES[c.next].end;
+    var label = nextEnd ? 'See where this leads' : (c.next === 'final' ? 'Go to the last day' : 'Next decision');
+    $('#p-reveal').innerHTML = '<div class="reveal"><p class="mono tag">' + (c.rz ? 'You matched Rizal' : 'Rizal chose differently') + '</p><p>' + c.re + '</p><button type="button" class="btn" id="p-next">' + label + '</button></div>';
+    var nx = $('#p-next');
+    nx.addEventListener('click', function () { ps.id = c.next; ps.chosen = false; renderPath(); });
+    nx.focus();
+  }
+  function renderFinal(root) {
+    addEnd('final');
+    mark('path');
+    var mine = tally(ps.hist.map(function (h) { return h.tag; }));
+    var riz = tally(ps.hist.map(function (h) { return h.rzTag; }));
+    var matched = ps.hist.filter(function (h) { return h.rz; }).length;
+    store.set('pathres', { matched: matched, mine: mine, riz: riz });
+    var max = Math.max(1, mine.risk, mine.restraint, mine.service, riz.risk, riz.restraint, riz.service);
+    function bar(k) {
+      return '<div class="bar-row"><span class="lab">' + TAGS[k] + '</span>' +
+        '<div class="track"><span>You</span><div class="trk"><i style="display:block;width:' + (mine[k] / max * 100) + '%;background:var(--blue)"></i></div><span>' + mine[k] + '</span></div>' +
+        '<div class="track"><span>Rizal</span><div class="trk"><i style="display:block;width:' + (riz[k] / max * 100) + '%;background:var(--red)"></i></div><span>' + riz[k] + '</span></div></div>';
+    }
+    root.innerHTML =
+      '<div class="meter"><span style="width:100%"></span></div>' +
+      '<p class="mono scene-place">Bagumbayan, December 30, 1896</p>' +
+      '<p class="story" style="margin-top:0.6rem">He was 35. A firing squad of Filipino soldiers carried out the sentence, with Spanish troops behind them. On his last night he left a farewell poem hidden for his family.</p>' +
+      '<p class="big">You matched Rizal on ' + matched + ' of 8 decisions.</p>' +
+      '<div class="bars">' + bar('risk') + bar('restraint') + bar('service') + '</div>' +
+      '<p style="margin-top:1.2rem">Look at Rizal’s bars. He took risks and he held back, sometimes within the same year. People criticized him for both. If a hero can be daring in one scene and cautious in the next, what does your definition of bayani have to allow?</p>' +
+      '<p class="mono" style="margin-top:1rem">Endings found: ' + ends.length + ' of ' + TOTAL_ENDS + '</p>' +
+      '<div class="row" style="margin-top:1.1rem"><a class="btn" href="#kahulugan">Write my definition</a><button type="button" class="btn ghost" id="p-restart">Find other endings</button></div>';
+    $('#p-restart').addEventListener('click', restartPath);
+  }
+  function restartPath() { ps = { id: 'n1', hist: [] }; renderPath(); }
+
+  /* ---------- KAHULUGAN ---------- */
+  var D = store.get('def', { nat: '', bay: '', kab: '', riz: '' });
+  var FIELDS = [['nat', '#d-nat', 'Nationalism'], ['bay', '#d-bay', 'Bayani'], ['kab', '#d-kab', 'Kabayanihan'], ['riz', '#d-riz', 'Does Rizal fit?']];
+  function renderTrail() {
+    var q = store.get('quiz', null), p = store.get('pathres', null), r = store.get('read', []);
+    var lines = [];
+    lines.push(q ? '<p><b>Quiz.</b> You answered ' + q.c.b + ' bayani, ' + q.c.k + ' kabayanihan lang, ' + q.c.n + ' hindi. Use the “kabayanihan lang” cases to explain the gap between act and person.</p>'
+                 : '<p><b>Quiz.</b> Not taken yet. <a href="#bayani">Take it first</a> to find where your line sits.</p>');
+    lines.push(r.length ? '<p><b>Feed.</b> You opened ' + r.length + ' of ' + POSTS.length + ' sources. Pick one event that surprised you and let it shape your definition.</p>'
+                        : '<p><b>Feed.</b> No sources opened yet. <a href="#feed">Read a few</a> so your definition rests on evidence.</p>');
+    lines.push(p ? '<p><b>Path.</b> You matched Rizal on ' + p.matched + ' of 8 decisions. His own mix was ' + p.riz.risk + ' risk, ' + p.riz.restraint + ' restraint and ' + p.riz.service + ' service.</p>'
+                 : '<p><b>Path.</b> Not finished. <a href="#path">Make his decisions</a> to see how risk and restraint both show up in one life.</p>');
+    $('#trail').innerHTML = lines.join('');
+  }
+  function renderPreview() {
+    var html = '<p class="mono">My working definitions</p>';
+    FIELDS.forEach(function (f) {
+      var v = (D[f[0]] || '').trim();
+      html += '<h3>' + f[2] + '</h3><p class="' + (v ? '' : 'empty') + '"></p>';
+    });
+    html += '<button type="button" class="btn" id="d-copy">Copy as text</button><div id="d-fallback"></div>';
+    var box = $('#d-prev');
+    box.innerHTML = html;
+    var ps2 = $$('p', box).filter(function (p) { return !p.classList.contains('mono'); });
+    FIELDS.forEach(function (f, i) {
+      var v = (D[f[0]] || '').trim();
+      ps2[i].textContent = v || 'Your answer will appear here.';
+    });
+    $('#d-copy').addEventListener('click', copyDef);
+  }
+  function defText() {
+    return FIELDS.map(function (f) { return f[2] + ': ' + ((D[f[0]] || '').trim() || '(not written yet)'); }).join('\n\n');
+  }
+  function copyDef() {
+    var text = defText();
+    var fb = $('#d-fallback');
+    function fallback() {
+      fb.innerHTML = '<textarea class="copybox" id="d-copybox" readonly aria-label="Your definitions"></textarea>';
+      var ta = $('#d-copybox'); ta.value = text; ta.focus(); ta.select();
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { fb.innerHTML = '<p class="mono" style="margin-top:0.8rem">Copied.</p>'; }, fallback);
+    } catch (e) { fallback(); }
+  }
+  function bindDef() {
+    FIELDS.forEach(function (f) {
+      var el = $(f[1]);
+      el.value = D[f[0]] || '';
+      el.addEventListener('input', function () {
+        D[f[0]] = el.value; store.set('def', D);
+        var done = ['nat', 'bay', 'kab'].every(function (k) { return (D[k] || '').trim().length >= 15; });
+        if (done) mark('def');
+        updatePreviewText();
+      });
+    });
+    $('#def-form').addEventListener('submit', function (e) { e.preventDefault(); });
+    renderPreview();
+  }
+  function updatePreviewText() {
+    var box = $('#d-prev');
+    var ps2 = $$('p', box).filter(function (p) { return !p.classList.contains('mono'); });
+    FIELDS.forEach(function (f, i) {
+      var v = (D[f[0]] || '').trim();
+      ps2[i].textContent = v || 'Your answer will appear here.';
+      ps2[i].classList.toggle('empty', !v);
+    });
+  }
+
+  /* ---------- boot ---------- */
+  renderQuiz();
+  renderChips();
+  renderFeed();
+  renderPath();
+  bindDef();
+  updatePreviewText();
+  paintProg();
+  route();
+})();
+</script>
+
+</body></html>
